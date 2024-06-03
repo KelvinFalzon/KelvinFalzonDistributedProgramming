@@ -1,0 +1,38 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Name": "GatewayAPI\\GatewayAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "IdentityAPI\\IdentityAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "MoviesAPI\\MoviesAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "OrdersAPI\\OrdersAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Name": "PaymentsAPI\\PaymentsAPI.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "WatchListsAPI\\WatchListsAPI.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      },
+      {
+        "Name": "WebApp\\WebApp.csproj",
+        "Action": "Start",
+        "DebugTarget": ""
+      }
+    ]
+  }
+]

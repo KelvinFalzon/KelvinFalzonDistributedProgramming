@@ -1,0 +1,32 @@
+{
+  "profiles": {
+    "IdentityAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/identity",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Database__ConnectionString": "mongodb+srv://kelvinfalzonuser:123@kelvinfalzondp.slfg6q4.mongodb.net/?retryWrites=true&w=majority&appName=KelvinFalzonDP"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5252"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": false,
+      "launchUrl": "api/identity",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:57418",
+      "sslPort": 0
+    }
+  }
+}

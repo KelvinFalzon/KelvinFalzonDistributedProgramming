@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "OrdersAPI.Controllers.OrdersController",
+    "Method": "GetOrderAsync",
+    "RelativePath": "api/Orders/getOrder",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OrdersAPI.Controllers.OrdersController",
+    "Method": "NewOrder",
+    "RelativePath": "api/Orders/newOrder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orders",
+        "Type": "OrdersAPI.Models.Order",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

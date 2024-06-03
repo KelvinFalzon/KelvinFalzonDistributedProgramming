@@ -1,0 +1,32 @@
+{
+  "profiles": {
+    "PaymentsAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/payments",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "Database__ConnectionString": "mongodb+srv://kelvinfalzonuser:123@kelvinfalzondp.slfg6q4.mongodb.net/?retryWrites=true&w=majority&appName=KelvinFalzonDP"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5030"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/payments",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:21503",
+      "sslPort": 0
+    }
+  }
+}

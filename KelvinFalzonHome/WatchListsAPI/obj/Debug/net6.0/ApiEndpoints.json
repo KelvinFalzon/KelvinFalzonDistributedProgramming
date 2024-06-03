@@ -1,0 +1,55 @@
+[
+  {
+    "ContainingType": "PaymentsAPI.Controllers.WatchlistsController",
+    "Method": "GetWatchlistAsync",
+    "RelativePath": "api/Watchlists/getWatchlist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaymentsAPI.Controllers.WatchlistsController",
+    "Method": "NewWatchList",
+    "RelativePath": "api/Watchlists/newWatchlist",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "watchlists",
+        "Type": "WatchListsAPI.Models.Watchlist",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaymentsAPI.Controllers.WatchlistsController",
+    "Method": "RemoveFromWatchlist",
+    "RelativePath": "api/Watchlists/removeWatchlist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "movieId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

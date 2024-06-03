@@ -1,0 +1,91 @@
+﻿@page "/userorders"
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inject HttpClient Http
+@inject ApiAuthenticationStateProvider ApiAuthenticationStateProvider
+
+<PageTitle>My Orders</PageTitle>
+
+<h1>My Orders</h1>
+
+@if (orderData == null || orderData.Count == 0)
+{
+    <p><em>No orders found.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Movie Name</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orderData)
+            {
+                var movie = movieData.FirstOrDefault(x => x.Id == order.MovieId);
+                <tr>
+                    <td>@movie?.Title</td>
+                    <td>10eu</td> 
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<OrderData?> orderData = new List<OrderData?>();
+    private List<MovieData?> movieData = new List<MovieData?>();
+
+    public class MovieData
+    {
+        public string? Id { get; set; }
+        public string? Title { get; set; }
+    }
+
+    public class OrderData
+    {
+        public string? UserId { get; set; }
+        public string? MovieId { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authstate = await ApiAuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        var userIdClaim = user.FindFirst(us => us.Type == "userId")?.Value;
+
+        if (!string.IsNullOrEmpty(userIdClaim))
+        {
+            try
+            {
+                orderData = await Http.GetFromJsonAsync<List<OrderData?>>($"http://localhost:5003/Gateway/orders/getorder?userId={userIdClaim}");
+
+                if (orderData != null)
+                {
+                    var movieIds = orderData.Where(o => o != null).Select(o => o.MovieId).Distinct();
+                    foreach (var movieId in movieIds)
+                    {
+                        var movie = await Http.GetFromJsonAsync<MovieData>($"http://localhost:5003/gateway/Movies/byId?MovieId={movieId}");
+                        if (movie != null)
+                        {
+                            movieData.Add(movie);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                orderData = new List<OrderData?>();
+            }
+        }
+        else
+        {
+            orderData = new List<OrderData?>();
+        }
+    }
+}
+

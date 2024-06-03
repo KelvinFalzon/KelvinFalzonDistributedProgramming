@@ -1,0 +1,75 @@
+﻿@page "/userdata"
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inject HttpClient Http
+@inject ApiAuthenticationStateProvider ApiAuthenticationStateProvider
+@inject ILogger<UserData> Logger
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<PageTitle>My User</PageTitle>
+
+<h1>User Data</h1>
+
+@if (userData == null)
+{
+    <p>User Data is null</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@userData.FirstName</td>
+                <td>@userData.LastName</td>
+                <td>@userData.Email</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private UsersData? userData;
+
+    public class UsersData
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string email = await localStorage.GetItemAsStringAsync("email");
+
+        var authstate = await ApiAuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var user = authstate.User;
+
+        var userIdClaim = user.FindFirst(c => c.Type == "userId")?.Value;
+
+        if (!string.IsNullOrEmpty(userIdClaim))
+        {
+            try
+            {
+                userData = await Http.GetFromJsonAsync<UsersData>($"http://localhost:5003/gateway/User/getuserdetails?userId={userIdClaim}");
+            }
+            catch (Exception ex)
+            {
+                userData = null;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Email is null or empty.");
+        }
+    }
+}

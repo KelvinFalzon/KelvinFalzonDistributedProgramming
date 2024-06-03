@@ -1,0 +1,82 @@
+﻿@page "/watchlist"
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
+@using WebApp.Models;
+@inject HttpClient Http
+@using System.Security.Claims
+@inject ApiAuthenticationStateProvider ApiAuthenticationStateProvider
+@inject ILogger<Watchlist> Logger
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<PageTitle>My Watchlist</PageTitle>
+
+<h1>My Watchlist</h1>
+
+@if (movies == null)
+{
+}
+else if (movies.Count == 0)
+{
+    <p><em>No movies in your watchlist.</em></p>
+}
+else
+{
+    <div class="movies-container">
+        @foreach (var movie in movies)
+        {
+            <div class="movie-card">
+                <h5>Title: @movie.Title</h5>
+                <p>ID: @movie.Id</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<MovieData>? movies;
+    private Movie? data;
+
+    public class MovieData
+    {
+        public string? Id { get; set; }
+        public string? MovieId { get; set; }
+        public string? Title { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("OnInitializedAsync started for Watchlist.");
+        await LoadWatchlistAsync();
+    }
+
+    private async Task<List<MovieData>?> LoadWatchlistAsync()
+    {
+        var authstate = await ApiAuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authstate.User;
+
+        var userIdClaim = user.FindFirst(c => c.Type == "userId")?.Value;
+        Console.WriteLine($"User ID from claim: {userIdClaim}");
+        try
+        {
+            string requestUrl = $"http://localhost:5003/gateway/Watchlists/getWatchlist?userId={userIdClaim}";
+            movies = await Http.GetFromJsonAsync<List<MovieData>>(requestUrl);
+            if (movies != null)
+            {
+                foreach (MovieData movie in movies)
+                {
+                    data = await Http.GetFromJsonAsync<Movie>($"http://localhost:5003/gateway/Movies/byId?MovieId={movie.MovieId}");
+                    Console.WriteLine(data.Title);
+                    movie.Title = data.Title;
+                    Console.WriteLine(movie.Title);
+                }
+            }
+
+            return movies;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError($"Failed to load watchlist: {ex.Message}");
+            return new List<MovieData>();
+        }
+    }
+}

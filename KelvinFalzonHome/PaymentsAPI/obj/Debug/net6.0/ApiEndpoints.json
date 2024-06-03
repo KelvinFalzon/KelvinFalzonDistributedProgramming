@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "PaymentsAPI.Controllers.PaymentsController",
+    "Method": "GetPaymentAsync",
+    "RelativePath": "api/Payments/getPayment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaymentsAPI.Controllers.PaymentsController",
+    "Method": "NewPayment",
+    "RelativePath": "api/Payments/newPayment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "payments",
+        "Type": "PaymentsAPI.Models.Payment",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

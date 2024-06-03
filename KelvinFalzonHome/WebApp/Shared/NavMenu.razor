@@ -1,0 +1,104 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject ApiAuthenticationStateProvider ApiAuthenticationStateProvider
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">WebApp</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="notif">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Notifications
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="userdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> User Info
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="userorders">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Orders
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="videos">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Media
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="watchlist">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Watchlist
+            </NavLink>
+        </div>
+        @if (isAdmin)
+        {
+            <div class="admin">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="upcomingMovie">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Upcoming Movies
+                    </NavLink>
+                </div>
+            </div>
+        }
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    private bool isAdmin = false; // Variable to hold the admin status
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckIfUserIsAdmin();
+    }
+
+    private async Task CheckIfUserIsAdmin()
+    {
+        var authstate = await ApiAuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        var userIdClaim = user.FindFirst(c => c.Type == "userId")?.Value;
+
+        if (userIdClaim == null)
+        {
+            // User is not logged in, handle accordingly
+            return;
+        }
+
+        var response = await Http.GetFromJsonAsync<AdminResponse>($"http://localhost:5003/gateway/User/isAdmin?userId={userIdClaim}");
+
+        if (response != null)
+        {
+            isAdmin = response.Admin;
+        }
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private class AdminResponse
+    {
+        public bool Admin { get; set; }
+    }
+}
